@@ -1,0 +1,21 @@
+{
+    "name": "backendx",
+    "version": "0.1.0",
+    "description": "Backend for the TuneTrade Platform.",
+    "main": "main.js",
+    "directories": {
+        "doc": "docs"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/TuneTrade/BackendX.git"
+    },
+    "author": "TuneTrade Technologies",
+    "license": "MIT",
+    "homepage": "https://github.com/TuneTrade/BackendX",
+    "dependencies": {
+        "express": "^4.16.4",
+        "helmet": "^3.18.0",
+        "web3": "^1.0.0-beta.54"
+    }
+}

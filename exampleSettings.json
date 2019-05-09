@@ -1,0 +1,7 @@
+{
+    "infura": "https://ropsten.infura.io/v3/",
+    "ssl": {
+        "key": "",
+        "cert": ""
+    }
+}
