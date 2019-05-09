@@ -7,7 +7,7 @@ var Web3 = require("web3");
 var web3 = new Web3(new Web3.providers.HttpProvider(settings.infura));
 
 //Start loading the modules. If this done outside of the top-level, a segfault occurs.
-var TuneTrader = import("./Modules/TuneTrader.mjs");
+var TuneTrader = import("./ModulesX/TuneTrader.mjs");
 
 //Site libs.
 var express = require("express");
