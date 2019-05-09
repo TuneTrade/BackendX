@@ -18,6 +18,7 @@ var settings = require("./settings.json");
 
 //Paths.
 var paths = {
+    modules: path.join(__dirname, "ModulesX"),
     public: path.join(__dirname, "FrontendX"),
     index: path.join(__dirname, "FrontendX", "index.html"),
     fourOhFor: path.join(__dirname, "FrontendX", "404.html")
@@ -60,6 +61,8 @@ async function errorFix(err, req, res, next) {
                 enforce: true
             }
         }))
+        //Serve the Modules.
+        .use("/modules/", express.static(paths.modules))
         //Serve the site.
         .use("/", express.static(paths.public))
         //Serve the index.
