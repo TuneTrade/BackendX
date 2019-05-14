@@ -1,3 +1,6 @@
 [submodule "ModulesX"]
 	path = ModulesX
 	url = https://github.com/TuneTrade/ModulesX
+[submodule "FrontendX"]
+	path = FrontendX
+	url = https://github.com/TuneTrade/FrontendX
