@@ -2,6 +2,7 @@
 
 ### GET /tokenInformation
 Result:
+    - `address`: TXT address.
     - `decimals`: TXT decimals.
     - `totalSupply`: TXT total supply.
     - `holders`: Amount of people holding tokens.
@@ -63,7 +64,7 @@ Arguments:
 Result:
     Image with a MIME type of "image".
 
-### POST /uploadPic
+### POST /uploadPicture
 Arguments:
 - `address`: Creator Contract.
 - `picture`: Picture.

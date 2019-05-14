@@ -1,7 +1,13 @@
 {
     "infura": "https://ropsten.infura.io/v3/",
+    
+    "httpOnly": false,
     "ssl": {
         "key": "",
         "cert": ""
+    },
+    "ports": {
+        "http": 80,
+        "https": 443
     }
 }

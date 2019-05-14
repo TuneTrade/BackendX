@@ -2,13 +2,6 @@
 var fs = require("fs");
 var path = require("path");
 
-//Web3.
-var Web3 = require("web3");
-var web3 = new Web3(new Web3.providers.HttpProvider(settings.infura));
-
-//Start loading the modules. If this done outside of the top-level, a segfault occurs.
-var TuneTrader = import("./ModulesX/TuneTrader.mjs");
-
 //Site libs.
 var express = require("express");
 var helmet = require("helmet");
@@ -21,7 +14,7 @@ var paths = {
     modules: path.join(__dirname, "ModulesX"),
     public: path.join(__dirname, "FrontendX"),
     index: path.join(__dirname, "FrontendX", "index.html"),
-    fourOhFor: path.join(__dirname, "FrontendX", "404.html")
+    fourOhFour: path.join(__dirname, "FrontendX", "public", "index.html")
 };
 
 //Error fix.
@@ -36,16 +29,10 @@ async function errorFix(err, req, res, next) {
 }
 
 (async () => {
-    //Await the Module loads.
-    TuneTrader = new ((await TuneTrader)["default"])(web3, "0xed134BC41B05511eA177F5b536d4975C2E844C5C");
+    var api = await (require("./API.js"))(settings);
 
     //Create the server.
-    require("https").createServer(
-        {
-            key: fs.readFileSync(settings.ssl.key),
-            cert: fs.readFileSync(settings.ssl.cert)
-        },
-        express()
+    var backend = express()
         //Disable etag.
         .set("etag", false)
         //Various security options.
@@ -61,17 +48,31 @@ async function errorFix(err, req, res, next) {
                 enforce: true
             }
         }))
+        //Use a Router for the API.
+        .use("/api", api)
         //Serve the Modules.
-        .use("/modules/", express.static(paths.modules))
+        .use("/modules", express.static(paths.modules))
         //Serve the site.
         .use("/", express.static(paths.public))
-        //Serve the index.
+        //Serve the 404 page.
         .get("*", async (req, res) => {
             res.sendFile(paths.fourOhFour);
         })
         //Handle errors.
-        .use(errorFix)
-    ).listen(443, "0.0.0.0");
+        .use(errorFix);
+
+    if (settings.httpOnly) {
+        require("http").createServer(backend).listen(settings.ports.http, "0.0.0.0");
+        return;
+    }
+
+    require("https").createServer(
+        {
+            key: fs.readFileSync(settings.ssl.key),
+            cert: fs.readFileSync(settings.ssl.cert)
+        },
+        backend
+    ).listen(settings.ports.https, "0.0.0.0");
 
     //Add a HTTP redirect.
     require("http").createServer(
@@ -96,5 +97,5 @@ async function errorFix(err, req, res, next) {
         })
         //Handle errors.
         .use(errorFix)
-    ).listen(80, "0.0.0.0");
+    ).listen(settings.ports.http, "0.0.0.0");
 })();
