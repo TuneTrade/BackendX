@@ -56,6 +56,7 @@ async function errorFix(err, req, res, next) {
         .use("/", express.static(paths.public))
         //Serve the 404 page.
         .get("*", async (req, res) => {
+            res.status(404);
             res.sendFile(paths.fourOhFour);
         })
         //Handle errors.

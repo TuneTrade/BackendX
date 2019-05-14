@@ -18,14 +18,12 @@ module.exports = async (settings) => {
     //Create the Router.
     var router = express.Router()
         .get("/tokenInformation", async (req, res) => {
-            res.end(
-                JSON.stringify({
-                    address: await TuneTrader.getTXTTokenAddress(),
-                    decimals: 0,
-                    totalSupply: 0,
-                    holders: 0
-                })
-            );
+            res.send({
+                address: await TuneTrader.getTXTTokenAddress(),
+                decimals: 0,
+                totalSupply: 0,
+                holders: 0
+            });
         })
         .get("/balance", async (req, res) => {
 
@@ -47,6 +45,12 @@ module.exports = async (settings) => {
         })
         .post("/uploadPicture", async (req, res) => {
 
+        })
+        .get("/*", async (req, res) => {
+            res.status(404);
+            res.send({
+                error: "Route not found."
+            });
         });
     return router;
 }
