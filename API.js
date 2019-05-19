@@ -3,7 +3,7 @@ var express = require("express");
 
 //Start loading the modules
 //If this done outside of the top-level, a segfault occurs.
-var TuneTrader = import("./ModulesX/TuneTrader.mjs");
+var TuneTrade = import("./ModulesX/TuneTrade.mjs");
 
 //Web3.
 var Web3 = require("web3");
@@ -13,13 +13,13 @@ module.exports = async (settings) => {
     var web3 = new Web3(new Web3.providers.HttpProvider(settings.infura));
 
     //Await the Module loads.
-    TuneTrader = new ((await TuneTrader)["default"])(web3, "0xed134BC41B05511eA177F5b536d4975C2E844C5C");
+    TuneTrade = new ((await TuneTrade)["default"])(web3, "0xed134BC41B05511eA177F5b536d4975C2E844C5C");
 
     //Create the Router.
     var router = express.Router()
         .get("/tokenInformation", async (req, res) => {
             res.send({
-                address: await TuneTrader.getTXTTokenAddress(),
+                address: await TuneTrade.getTXTTokenAddress(),
                 decimals: 0,
                 totalSupply: 0,
                 holders: 0
